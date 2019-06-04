@@ -22,21 +22,21 @@ func NewService(filePath string) Service {
 	}
 }
 
-func (pc *Service) Create(participant Participant) (Participant, error) {
-	participants, err := pc.readFile()
+func (pc *Service) Create(p Participant) (Participant, error) {
+	ps, err := pc.readFile()
 	if err != nil {
 		return Participant{}, err
 	}
-	if findParticipant(participant.Name, participants) >= 0 {
+	if findParticipant(p.Name, ps) >= 0 {
 		return Participant{}, errors.New(NameAlreadyTakenErrorMessage)
 	}
 
-	participants = append(participants, participant)
+	ps = append(ps, p)
 
-	if err = pc.writeFile(participants); err != nil {
+	if err = pc.writeFile(ps); err != nil {
 		return Participant{}, err
 	} else {
-		return participant, nil
+		return p, nil
 	}
 }
 
@@ -108,26 +108,26 @@ func (pc *Service) updateParticipant(name string, updater func(*Participant) err
 }
 
 func (pc *Service) readFile() ([]Participant, error) {
-	participants := []Participant{}
+	ps := []Participant{}
 	if _, err := os.Stat(pc.filePath); os.IsNotExist(err) {
-		return participants, pc.writeFile(participants)
+		return ps, pc.writeFile(ps)
 	}
 
-	bParticipants, err := ioutil.ReadFile(pc.filePath)
+	jps, err := ioutil.ReadFile(pc.filePath)
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal(bParticipants, &participants)
-	return participants, err
+	err = json.Unmarshal(jps, &ps)
+	return ps, err
 }
 
-func (pc *Service) writeFile(participants []Participant) error {
-	jParticipants, err := json.Marshal(participants)
+func (pc *Service) writeFile(ps []Participant) error {
+	jps, err := json.Marshal(ps)
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(pc.filePath, jParticipants, 664)
+	err = ioutil.WriteFile(pc.filePath, jps, 664)
 	return err
 }
