@@ -2,8 +2,13 @@ package participants
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
+)
+
+const (
+	NameAlreadyTakenErrorMessage = "Name already taken"
 )
 
 type Service struct {
@@ -13,6 +18,24 @@ type Service struct {
 func NewService(filePath string) Service {
 	return Service{
 		filePath: filePath,
+	}
+}
+
+func (pc *Service) Create(participant Participant) (Participant, error) {
+	participants, err := pc.readFile()
+	if err != nil {
+		return Participant{}, err
+	}
+	if findParticipant(participant.Name, participants) >= 0 {
+		return Participant{}, errors.New(NameAlreadyTakenErrorMessage)
+	}
+
+	participants = append(participants, participant)
+
+	if err = pc.writeFile(participants); err != nil {
+		return Participant{}, err
+	} else {
+		return participant, nil
 	}
 }
 
