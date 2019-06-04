@@ -107,6 +107,21 @@ func (pc *Service) updateParticipant(name string, updater func(*Participant) err
 	return ps[i], nil
 }
 
+func (pc *Service) Delete(name string) error {
+	ps, err := pc.readFile()
+	if err != nil {
+		return err
+	}
+
+	i := findParticipant(name, ps)
+	if i < 0 {
+		return errors.New(ParticipantNotFoundErrorMessage)
+	}
+
+	ps[i] = ps[len(ps)-1]
+	return pc.writeFile(ps)
+}
+
 func (pc *Service) readFile() ([]Participant, error) {
 	ps := []Participant{}
 	if _, err := os.Stat(pc.filePath); os.IsNotExist(err) {
