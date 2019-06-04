@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	NameAlreadyTakenErrorMessage = "Name already taken"
+	ParticipantNotFoundErrorMessage = "Participant not found"
+	NameAlreadyTakenErrorMessage    = "Name already taken"
 )
 
 type Service struct {
@@ -37,6 +38,24 @@ func (pc *Service) Create(participant Participant) (Participant, error) {
 	} else {
 		return participant, nil
 	}
+}
+
+func (pc *Service) GetAll() ([]Participant, error) {
+	return pc.readFile()
+}
+
+func (pc *Service) Get(name string) (Participant, error) {
+	ps, err := pc.readFile()
+	if err != nil {
+		return Participant{}, err
+	}
+
+	i := findParticipant(name, ps)
+	if i < 0 {
+		return Participant{}, errors.New(ParticipantNotFoundErrorMessage)
+	}
+
+	return ps[i], nil
 }
 
 func (pc *Service) readFile() ([]Participant, error) {
