@@ -53,9 +53,10 @@ func main() {
 
 	router := httprouter.New()
 
+	router.ServeFiles("/app/*filepath", http.Dir("./clientApp"))
+
 	router.POST("/api/participants", pc.Create)
 
-	router.GET("/", Index)
 	router.GET("/api/participants/", pc.GetAll)
 	router.GET("/api/participants/:"+participants.NameParameter, pc.Get)
 
