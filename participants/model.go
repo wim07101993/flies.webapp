@@ -11,9 +11,9 @@ type Participant struct {
 
 func (p *Participant) IncreaseScore(amount uint16) (newScore uint16) {
 	if p.Score > math.MaxUint16-amount {
-		p.Score += amount
-	} else {
 		p.Score = math.MaxInt16
+	} else {
+		p.Score += amount
 	}
 	return p.Score
 }

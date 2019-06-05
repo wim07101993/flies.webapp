@@ -63,3 +63,8 @@ func isEmptyOrWhiteSpace(s string) bool {
 func logRequest(method string, r *http.Request) {
 	log.Print("Request:", method, "from", r.RemoteAddr)
 }
+
+func removeAt(ps []Participant, i int) []Participant {
+	ps[i] = ps[len(ps)-1]
+	return ps[:len(ps)-1]
+}

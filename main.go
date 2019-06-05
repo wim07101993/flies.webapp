@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	Port     = "8080"
+	Port     = "80"
 	IpAddres = ""
 )
 
@@ -53,18 +53,18 @@ func main() {
 
 	router := httprouter.New()
 
-	router.POST("/participants", pc.Create)
+	router.POST("/api/participants", pc.Create)
 
 	router.GET("/", Index)
-	router.GET("/participants/", pc.GetAll)
-	router.GET("/participants/:"+participants.NameParameter, pc.Get)
+	router.GET("/api/participants/", pc.GetAll)
+	router.GET("/api/participants/:"+participants.NameParameter, pc.Get)
 
-	router.PUT("/participants/:"+participants.NameParameter+"/score", pc.UpdateScore)
-	router.PUT("/participants/:"+participants.NameParameter+"/name", pc.UpdateName)
-	router.PUT("/participants/:"+participants.NameParameter+"/increaseScore", pc.IncreaseScore)
-	router.PUT("/participants/:"+participants.NameParameter+"/decreaseScore", pc.DecreaseScore)
+	router.PUT("/api/participants/:"+participants.NameParameter+"/score", pc.UpdateScore)
+	router.PUT("/api/participants/:"+participants.NameParameter+"/name", pc.UpdateName)
+	router.PUT("/api/participants/:"+participants.NameParameter+"/increaseScore", pc.IncreaseScore)
+	router.PUT("/api/participants/:"+participants.NameParameter+"/decreaseScore", pc.DecreaseScore)
 
-	router.DELETE("/participants/:"+participants.NameParameter, pc.Delete)
+	router.DELETE("/api/participants/:"+participants.NameParameter, pc.Delete)
 
 	log.Println("Start listening at", IpAddres+":"+Port)
 	log.Fatal(http.ListenAndServe(IpAddres+":"+Port, router))

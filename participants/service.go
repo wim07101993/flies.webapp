@@ -126,7 +126,7 @@ func (pc *Service) Delete(name string) error {
 		return errors.New(ParticipantNotFoundErrorMessage)
 	}
 
-	ps[i] = ps[len(ps)-1]
+	ps = removeAt(ps, i)
 	return pc.writeFile(ps)
 }
 
