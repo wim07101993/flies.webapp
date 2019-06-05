@@ -12,6 +12,11 @@ import (
 	"github.com/wim07101993/fly_swatting_contest/participants"
 )
 
+const (
+	Port     = "8080"
+	IpAddres = ""
+)
+
 func readSettings(filePath string) Settings {
 	bsettings, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -39,6 +44,8 @@ func main() {
 		s = readSettings("settings.json")
 	}
 
+	log.Println("File set to:", s.ParticiPantsFilePath)
+
 	ps := participants.NewService(s.ParticiPantsFilePath)
 	pc := participants.NewController(ps)
 
@@ -57,5 +64,6 @@ func main() {
 
 	router.DELETE("/participants/:"+participants.NameParameter, pc.Delete)
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Println("Start listening at", IpAddres+":"+Port)
+	log.Fatal(http.ListenAndServe(IpAddres+":"+Port, router))
 }
