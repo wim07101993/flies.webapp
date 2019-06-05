@@ -133,3 +133,15 @@ func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Response, ps htt
 
 	writeJson(w, p)
 }
+
+func (pc *Controller) Delete(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+	name := ps.ByName(NameParameter)
+
+	err := pc.service.Delete(name)
+	if checkError(w, err) {
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Deleted"))
+}
