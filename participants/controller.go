@@ -5,13 +5,16 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
 
 const (
-	BadJsonErrorMessage = "The given object could not be interpreted by the server."
-	NameParameter       = "name"
+	BadJsonErrorMessage   = "The given object could not be interpreted by the server."
+	BadAmountErrorMessage = "The given amount could not be interpreted by teh server."
+	NameParameter         = "name"
+	AmountParameter       = "amount"
 )
 
 type Controller struct {
@@ -33,7 +36,8 @@ func (pc *Controller) Create(w http.ResponseWriter, r *http.Request, ps httprout
 
 	var p Participant
 	err = json.Unmarshal(jp, &p)
-	if checkError(w, errors.New(BadJsonErrorMessage)) {
+	if err != nil {
+		checkError(w, errors.New(BadJsonErrorMessage))
 		return
 	}
 
@@ -57,6 +61,40 @@ func (pc *Controller) GetAll(w http.ResponseWriter, r *http.Request, _ httproute
 func (pc *Controller) Get(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
 	name := ps.ByName(NameParameter)
 	p, err := pc.service.Get(name)
+	if checkError(w, err) {
+		return
+	}
+
+	writeJson(w, p)
+}
+
+func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+	name := ps.ByName(NameParameter)
+	sAmount := ps.ByName(AmountParameter)
+	amount, err := strconv.ParseUint(sAmount, 10, 16)
+	if err != nil {
+		checkError(w, errors.New(BadAmountErrorMessage))
+		return
+	}
+
+	p, err := pc.service.IncreaseScore(name, uint16(amount))
+	if checkError(w, err) {
+		return
+	}
+
+	writeJson(w, p)
+}
+
+func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+	name := ps.ByName(NameParameter)
+	sAmount := ps.ByName(AmountParameter)
+	amount, err := strconv.ParseUint(sAmount, 10, 16)
+	if err != nil {
+		checkError(w, errors.New(BadAmountErrorMessage))
+		return
+	}
+
+	p, err := pc.service.DecreaseScore(name, uint16(amount))
 	if checkError(w, err) {
 		return
 	}
