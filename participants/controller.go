@@ -12,9 +12,12 @@ import (
 
 const (
 	BadJsonErrorMessage   = "The given object could not be interpreted by the server."
-	BadAmountErrorMessage = "The given amount could not be interpreted by teh server."
+	BadAmountErrorMessage = "The given amount could not be interpreted by the server."
+	BadScoreErrorMessage  = "The given score could not be interpreted by the server."
 	NameParameter         = "name"
 	AmountParameter       = "amount"
+	ScoreParameter        = "score"
+	NewNameParamter       = "newName"
 )
 
 type Controller struct {
@@ -95,6 +98,35 @@ func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Response, ps 
 	}
 
 	p, err := pc.service.DecreaseScore(name, uint16(amount))
+	if checkError(w, err) {
+		return
+	}
+
+	writeJson(w, p)
+}
+
+func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+	name := ps.ByName(NameParameter)
+	sScore := ps.ByName(ScoreParameter)
+	score, err := strconv.ParseUint(sScore, 10, 16)
+	if err != nil {
+		checkError(w, errors.New(BadScoreErrorMessage))
+		return
+	}
+
+	p, err := pc.service.UpdateScore(name, uint16(score))
+	if checkError(w, err) {
+		return
+	}
+
+	writeJson(w, p)
+}
+
+func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+	name := ps.ByName(NameParameter)
+	newName := ps.ByName(NewNameParamter)
+
+	p, err := pc.service.UpdateName(name, newName)
 	if checkError(w, err) {
 		return
 	}

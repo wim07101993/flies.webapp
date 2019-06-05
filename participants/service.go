@@ -10,6 +10,7 @@ import (
 const (
 	ParticipantNotFoundErrorMessage = "Participant not found"
 	NameAlreadyTakenErrorMessage    = "Name already taken"
+	NameCannotBeEmptyErrorMessage   = "The name of a participant cannot be empty"
 )
 
 type Service struct {
@@ -29,6 +30,9 @@ func (pc *Service) Create(p Participant) (Participant, error) {
 	}
 	if findParticipant(p.Name, ps) >= 0 {
 		return Participant{}, errors.New(NameAlreadyTakenErrorMessage)
+	}
+	if isEmptyOrWhiteSpace(p.Name) {
+		return Participant{}, errors.New(NameCannotBeEmptyErrorMessage)
 	}
 
 	ps = append(ps, p)
@@ -80,6 +84,10 @@ func (pc *Service) UpdateScore(name string, newScore uint16) (Participant, error
 }
 
 func (pc *Service) UpdateName(oldName string, newName string) (Participant, error) {
+	if isEmptyOrWhiteSpace(newName) {
+		return Participant{}, errors.New(NameCannotBeEmptyErrorMessage)
+	}
+
 	return pc.updateParticipant(oldName, func(p *Participant) error {
 		p.Name = newName
 		return nil

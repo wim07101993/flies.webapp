@@ -3,6 +3,7 @@ package participants
 import (
 	"encoding/json"
 	"net/http"
+	"unicode"
 )
 
 func findParticipant(name string, participants []Participant) int {
@@ -37,6 +38,20 @@ func checkError(w http.ResponseWriter, err error) bool {
 		http.Error(w, errMes, http.StatusBadRequest)
 	} else {
 		http.Error(w, errMes, http.StatusInternalServerError)
+	}
+
+	return true
+}
+
+func isEmptyOrWhiteSpace(s string) bool {
+	if s == "" {
+		return true
+	}
+
+	for _, c := range s {
+		if !unicode.IsSpace(c) {
+			return false
+		}
 	}
 
 	return true
