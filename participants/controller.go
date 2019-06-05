@@ -31,6 +31,7 @@ func NewController(service Service) Controller {
 }
 
 func (pc *Controller) Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logRequest("Create", r)
 	jp, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 	if checkError(w, err) {
@@ -53,6 +54,7 @@ func (pc *Controller) Create(w http.ResponseWriter, r *http.Request, ps httprout
 }
 
 func (pc *Controller) GetAll(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	logRequest("GetAll", r)
 	ps, err := pc.service.GetAll()
 	if checkError(w, err) {
 		return
@@ -62,6 +64,7 @@ func (pc *Controller) GetAll(w http.ResponseWriter, r *http.Request, _ httproute
 }
 
 func (pc *Controller) Get(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logRequest("Get", r)
 	name := ps.ByName(NameParameter)
 	p, err := pc.service.Get(name)
 	if checkError(w, err) {
@@ -72,6 +75,7 @@ func (pc *Controller) Get(w http.ResponseWriter, r *http.Request, ps httprouter.
 }
 
 func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logRequest("IncreaseScore", r)
 	name := ps.ByName(NameParameter)
 	sAmount := ps.ByName(AmountParameter)
 	amount, err := strconv.ParseUint(sAmount, 10, 16)
@@ -89,6 +93,7 @@ func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Request, ps h
 }
 
 func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logRequest("DecreaseScore", r)
 	name := ps.ByName(NameParameter)
 	sAmount := ps.ByName(AmountParameter)
 	amount, err := strconv.ParseUint(sAmount, 10, 16)
@@ -106,6 +111,7 @@ func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Request, ps h
 }
 
 func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logRequest("UpdateScore", r)
 	name := ps.ByName(NameParameter)
 	sScore := ps.ByName(ScoreParameter)
 	score, err := strconv.ParseUint(sScore, 10, 16)
@@ -123,6 +129,7 @@ func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Request, ps htt
 }
 
 func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logRequest("UpdateName", r)
 	name := ps.ByName(NameParameter)
 	newName := ps.ByName(NewNameParamter)
 
@@ -135,6 +142,7 @@ func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Request, ps http
 }
 
 func (pc *Controller) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	logRequest("Delete", r)
 	name := ps.ByName(NameParameter)
 
 	err := pc.service.Delete(name)

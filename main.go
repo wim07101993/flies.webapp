@@ -18,6 +18,7 @@ const (
 )
 
 func readSettings(filePath string) Settings {
+	log.Println("Reading settings at:", filePath)
 	bsettings, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		panic(err)
@@ -33,6 +34,7 @@ func readSettings(filePath string) Settings {
 }
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	log.Print("Request:Idex from", r.RemoteAddr)
 	fmt.Fprint(w, "Welcome!\n")
 }
 

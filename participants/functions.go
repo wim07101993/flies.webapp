@@ -2,6 +2,7 @@ package participants
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"unicode"
 )
@@ -31,6 +32,8 @@ func checkError(w http.ResponseWriter, err error) bool {
 	}
 
 	errMes := err.Error()
+	log.Println("\tError:", errMes)
+
 	if errMes == ParticipantNotFoundErrorMessage {
 		http.Error(w, errMes, http.StatusNotFound)
 	} else if errMes == NameAlreadyTakenErrorMessage ||
@@ -55,4 +58,8 @@ func isEmptyOrWhiteSpace(s string) bool {
 	}
 
 	return true
+}
+
+func logRequest(method string, r *http.Request) {
+	log.Print("Request:", method, "from", r.RemoteAddr)
 }
