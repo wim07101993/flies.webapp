@@ -14,13 +14,13 @@ func findParticipant(name string, participants []Participant) int {
 	return -1
 }
 
-func writeJsonParticipant(w http.ResponseWriter, p Participant) {
-	jp, err := json.Marshal(p)
+func writeJson(w http.ResponseWriter, v interface{}) {
+	jv, err := json.Marshal(v)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("content-type", "application/json")
-	w.Write(jp)
+	w.Write(jv)
 }

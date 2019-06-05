@@ -39,5 +39,14 @@ func (pc *Controller) Create(w http.ResponseWriter, r *http.Request, ps httprout
 		return
 	}
 
-	writeJsonParticipant(w, p)
+	writeJson(w, p)
+}
+
+func (pc *Controller) GetAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	pts, err := pc.service.GetAll()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	writeJson(w, pts)
 }
