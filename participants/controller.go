@@ -77,7 +77,8 @@ func (pc *Controller) Get(w http.ResponseWriter, r *http.Request, ps httprouter.
 func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logRequest("IncreaseScore", r)
 	name := ps.ByName(NameParameter)
-	sAmount := ps.ByName(AmountParameter)
+
+	sAmount := r.URL.Query().Get(AmountParameter)
 	amount, err := strconv.ParseUint(sAmount, 10, 16)
 	if err != nil {
 		checkError(w, errors.New(BadAmountErrorMessage))
@@ -95,7 +96,8 @@ func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Request, ps h
 func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logRequest("DecreaseScore", r)
 	name := ps.ByName(NameParameter)
-	sAmount := ps.ByName(AmountParameter)
+
+	sAmount := r.URL.Query().Get(AmountParameter)
 	amount, err := strconv.ParseUint(sAmount, 10, 16)
 	if err != nil {
 		checkError(w, errors.New(BadAmountErrorMessage))
@@ -113,7 +115,8 @@ func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Request, ps h
 func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logRequest("UpdateScore", r)
 	name := ps.ByName(NameParameter)
-	sScore := ps.ByName(ScoreParameter)
+
+	sScore := r.URL.Query().Get(ScoreParameter)
 	score, err := strconv.ParseUint(sScore, 10, 16)
 	if err != nil {
 		checkError(w, errors.New(BadScoreErrorMessage))
@@ -131,8 +134,8 @@ func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Request, ps htt
 func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	logRequest("UpdateName", r)
 	name := ps.ByName(NameParameter)
-	newName := ps.ByName(NewNameParamter)
 
+	newName := r.URL.Query().Get(NewNameParamter)
 	p, err := pc.service.UpdateName(name, newName)
 	if checkError(w, err) {
 		return
