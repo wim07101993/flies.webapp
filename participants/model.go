@@ -5,33 +5,33 @@ import (
 )
 
 type Participant struct {
-	Name  string
-	score uint16
+	Name  string `json:"name"`
+	Score uint16 `json:"score"`
 }
 
 func (p *Participant) IncreaseScore(amount uint16) (newScore uint16) {
-	if p.score > math.MaxUint16-amount {
-		p.score += amount
+	if p.Score > math.MaxUint16-amount {
+		p.Score += amount
 	} else {
-		p.score = math.MaxInt16
+		p.Score = math.MaxInt16
 	}
-	return p.score
+	return p.Score
 }
 
 func (p *Participant) DecreaseScore(amount uint16) (newScore uint16) {
-	if p.score < amount {
-		p.score = 0
+	if p.Score < amount {
+		p.Score = 0
 	} else {
-		p.score -= amount
+		p.Score -= amount
 	}
-	return p.score
+	return p.Score
 }
 
 func (p *Participant) SetScore(value uint16) (newScore uint16) {
-	p.score = value
-	return p.score
+	p.Score = value
+	return p.Score
 }
 
 func (p *Participant) GetScore() uint16 {
-	return p.score
+	return p.Score
 }
