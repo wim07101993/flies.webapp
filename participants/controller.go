@@ -61,7 +61,7 @@ func (pc *Controller) GetAll(w http.ResponseWriter, r *http.Request, _ httproute
 	writeJson(w, ps)
 }
 
-func (pc *Controller) Get(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+func (pc *Controller) Get(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	name := ps.ByName(NameParameter)
 	p, err := pc.service.Get(name)
 	if checkError(w, err) {
@@ -71,7 +71,7 @@ func (pc *Controller) Get(w http.ResponseWriter, r *http.Response, ps httprouter
 	writeJson(w, p)
 }
 
-func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	name := ps.ByName(NameParameter)
 	sAmount := ps.ByName(AmountParameter)
 	amount, err := strconv.ParseUint(sAmount, 10, 16)
@@ -88,7 +88,7 @@ func (pc *Controller) IncreaseScore(w http.ResponseWriter, r *http.Response, ps 
 	writeJson(w, p)
 }
 
-func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	name := ps.ByName(NameParameter)
 	sAmount := ps.ByName(AmountParameter)
 	amount, err := strconv.ParseUint(sAmount, 10, 16)
@@ -105,7 +105,7 @@ func (pc *Controller) DecreaseScore(w http.ResponseWriter, r *http.Response, ps 
 	writeJson(w, p)
 }
 
-func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	name := ps.ByName(NameParameter)
 	sScore := ps.ByName(ScoreParameter)
 	score, err := strconv.ParseUint(sScore, 10, 16)
@@ -122,7 +122,7 @@ func (pc *Controller) UpdateScore(w http.ResponseWriter, r *http.Response, ps ht
 	writeJson(w, p)
 }
 
-func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	name := ps.ByName(NameParameter)
 	newName := ps.ByName(NewNameParamter)
 
@@ -134,7 +134,7 @@ func (pc *Controller) UpdateName(w http.ResponseWriter, r *http.Response, ps htt
 	writeJson(w, p)
 }
 
-func (pc *Controller) Delete(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+func (pc *Controller) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	name := ps.ByName(NameParameter)
 
 	err := pc.service.Delete(name)
