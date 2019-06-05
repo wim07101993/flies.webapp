@@ -2,10 +2,16 @@ package participants
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
+)
+
+const (
+	BadJsonErrorMessage = "The given object could not be interpreted by the server."
+	NameParameter       = "name"
 )
 
 type Controller struct {
@@ -21,32 +27,39 @@ func NewController(service Service) Controller {
 func (pc *Controller) Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	jp, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if checkError(w, err) {
 		return
 	}
 
 	var p Participant
 	err = json.Unmarshal(jp, &p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+	if checkError(w, errors.New(BadJsonErrorMessage)) {
 		return
 	}
 
 	p, err = pc.service.Create(p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if checkError(w, err) {
 		return
 	}
 
 	writeJson(w, p)
 }
 
-func (pc *Controller) GetAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	pts, err := pc.service.GetAll()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+func (pc *Controller) GetAll(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	ps, err := pc.service.GetAll()
+	if checkError(w, err) {
+		return
 	}
 
-	writeJson(w, pts)
+	writeJson(w, ps)
+}
+
+func (pc *Controller) Get(w http.ResponseWriter, r *http.Response, ps httprouter.Params) {
+	name := ps.ByName(NameParameter)
+	p, err := pc.service.Get(name)
+	if checkError(w, err) {
+		return
+	}
+
+	writeJson(w, p)
 }
