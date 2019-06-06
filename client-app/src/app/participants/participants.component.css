@@ -1,0 +1,22 @@
+.mat-form-field {
+    font-size: 14px;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+  
+tr.mat-footer-row {
+    font-weight: bold;
+}
+
+.name {
+    min-width: 100px;
+    margin-right: 10px;
+}
+
+.up-down-button {
+    min-width: 36px; 
+    margin: 0px; 
+    padding: 0px;
+}
