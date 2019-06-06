@@ -9,12 +9,7 @@ import (
 	"os"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/wim07101993/fly_swatting_contest/participants"
-)
-
-const (
-	Port     = "80"
-	IpAddres = ""
+	"github.com/wim07101993/fly_swatting_contest/api/participants"
 )
 
 func readSettings(filePath string) Settings {
@@ -65,6 +60,6 @@ func main() {
 
 	router.DELETE("/api/participants/:"+participants.NameParameter, pc.Delete)
 
-	log.Println("Start listening at", IpAddres+":"+Port)
-	log.Fatal(http.ListenAndServe(IpAddres+":"+Port, router))
+	log.Println("Start listening at", s.IpAddress+":"+s.PortNumber)
+	log.Fatal(http.ListenAndServe(s.IpAddress+":"+s.PortNumber, router))
 }
