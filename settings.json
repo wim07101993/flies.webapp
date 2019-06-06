@@ -1,3 +1,5 @@
 {
-    "particiPantsFilePath": "participants.json"
+    "particiPantsFilePath": "participants.json",
+    "portNumber" : 5000,
+    "ipAddress" : ""
 }

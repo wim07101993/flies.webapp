@@ -43,7 +43,7 @@ func main() {
 	if len(os.Args) > 1 {
 		s = readSettings(os.Args[1])
 	} else {
-		s = readSettings("settings.json")
+		s = CreateDefaultSettings()
 	}
 
 	log.Println("File set to:", s.ParticiPantsFilePath)
@@ -52,8 +52,6 @@ func main() {
 	pc := participants.NewController(ps)
 
 	router := httprouter.New()
-
-	router.ServeFiles("/app/*filepath", http.Dir("./clientApp"))
 
 	router.POST("/api/participants", pc.Create)
 
