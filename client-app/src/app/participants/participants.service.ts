@@ -8,7 +8,7 @@ import { ParticipantDTO } from './participant';
 })
 export class ParticipantsService {
 
-  apiUrl: string = 'localhost:5000'
+  private apiUrl: string = 'http://localhost:5000/api'
   
   constructor(
     private http: HttpClient
@@ -27,11 +27,11 @@ export class ParticipantsService {
   }
 
   updateName(oldName: string, newName: string) : Observable<ParticipantDTO> {
-    return this.http.put<ParticipantDTO>(`${this.apiUrl}/participants/${oldName}/name?name=${newName}`, "");
+    return this.http.put<ParticipantDTO>(`${this.apiUrl}/participants/${oldName}/name/?name=${newName}`, "");
   }
 
   updateScore(name: string, score: number) : Observable<ParticipantDTO> {
-    return this.http.put<ParticipantDTO>(`${this.apiUrl}/participants/${name}/name?score=${score}`, "");
+    return this.http.put<ParticipantDTO>(`${this.apiUrl}/participants/${name}/score/?score=${score}`, "");
   }
 
   deleteParticipant(name: string) {

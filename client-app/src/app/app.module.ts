@@ -4,20 +4,22 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ParticipantsComponent } from './participants/participants.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatInputModule, MatSortModule } from '@angular/material';
+import { MatInputModule, MatSortModule, MatDialogModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+
+import { ParticipantsComponent, NewParticipantDialog } from './participants/participants.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ParticipantsComponent,
+    NewParticipantDialog,
   ],
   imports: [
     BrowserModule,
@@ -29,9 +31,13 @@ import { HttpClientModule } from '@angular/common/http';
     MatTableModule,
     MatInputModule,
     MatSortModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    NewParticipantDialog,
+  ]
 })
 export class AppModule { }
