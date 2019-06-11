@@ -37,7 +37,8 @@ func checkError(w http.ResponseWriter, err error) bool {
 	if errMes == ParticipantNotFoundErrorMessage {
 		http.Error(w, errMes, http.StatusNotFound)
 	} else if errMes == NameAlreadyTakenErrorMessage ||
-		errMes == BadJsonErrorMessage {
+		errMes == BadJsonErrorMessage ||
+		errMes == NameCannotBeEmptyErrorMessage {
 		http.Error(w, errMes, http.StatusBadRequest)
 	} else {
 		http.Error(w, errMes, http.StatusInternalServerError)
@@ -61,10 +62,17 @@ func isEmptyOrWhiteSpace(s string) bool {
 }
 
 func logRequest(method string, r *http.Request) {
-	log.Print("Request:", method, "from", r.RemoteAddr)
+	log.Println("Request:", method, "from", r.RemoteAddr)
+	log.Println("\tUrl:", r.RequestURI)
 }
 
 func removeAt(ps []Participant, i int) []Participant {
 	ps[i] = ps[len(ps)-1]
 	return ps[:len(ps)-1]
+}
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
