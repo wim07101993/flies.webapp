@@ -28,11 +28,16 @@ func (pc *Service) Create(p Participant) (Participant, error) {
 	if err != nil {
 		return Participant{}, err
 	}
-	if findParticipant(p.Name, ps) >= 0 {
+	if hasParticipantWithName(p.Name, ps) {
 		return Participant{}, errors.New(NameAlreadyTakenErrorMessage)
 	}
 	if isEmptyOrWhiteSpace(p.Name) {
 		return Participant{}, errors.New(NameCannotBeEmptyErrorMessage)
+	}
+
+	p.Id, err = getNewId(ps)
+	if err != nil {
+		return Participant{}, err
 	}
 
 	ps = append(ps, p)
@@ -48,13 +53,13 @@ func (pc *Service) GetAll() ([]Participant, error) {
 	return pc.readFile()
 }
 
-func (pc *Service) Get(name string) (Participant, error) {
+func (pc *Service) Get(id uint32) (Participant, error) {
 	ps, err := pc.readFile()
 	if err != nil {
 		return Participant{}, err
 	}
 
-	i := findParticipant(name, ps)
+	i := findParticipant(id, ps)
 	if i < 0 {
 		return Participant{}, errors.New(ParticipantNotFoundErrorMessage)
 	}
@@ -62,45 +67,45 @@ func (pc *Service) Get(name string) (Participant, error) {
 	return ps[i], nil
 }
 
-func (pc *Service) IncreaseScore(name string, amount uint16) (Participant, error) {
-	return pc.updateParticipant(name, func(p *Participant) error {
+func (pc *Service) IncreaseScore(id uint32, amount uint16) (Participant, error) {
+	return pc.updateParticipant(id, func(p *Participant) error {
 		p.IncreaseScore(amount)
 		return nil
 	})
 }
 
-func (pc *Service) DecreaseScore(name string, amount uint16) (Participant, error) {
-	return pc.updateParticipant(name, func(p *Participant) error {
+func (pc *Service) DecreaseScore(id uint32, amount uint16) (Participant, error) {
+	return pc.updateParticipant(id, func(p *Participant) error {
 		p.DecreaseScore(amount)
 		return nil
 	})
 }
 
-func (pc *Service) UpdateScore(name string, newScore uint16) (Participant, error) {
-	return pc.updateParticipant(name, func(p *Participant) error {
+func (pc *Service) UpdateScore(id uint32, newScore uint16) (Participant, error) {
+	return pc.updateParticipant(id, func(p *Participant) error {
 		p.SetScore(newScore)
 		return nil
 	})
 }
 
-func (pc *Service) UpdateName(oldName string, newName string) (Participant, error) {
+func (pc *Service) UpdateName(id uint32, newName string) (Participant, error) {
 	if isEmptyOrWhiteSpace(newName) {
 		return Participant{}, errors.New(NameCannotBeEmptyErrorMessage)
 	}
 
-	return pc.updateParticipant(oldName, func(p *Participant) error {
+	return pc.updateParticipant(id, func(p *Participant) error {
 		p.Name = newName
 		return nil
 	})
 }
 
-func (pc *Service) updateParticipant(name string, updater func(*Participant) error) (Participant, error) {
+func (pc *Service) updateParticipant(id uint32, updater func(*Participant) error) (Participant, error) {
 	ps, err := pc.readFile()
 	if err != nil {
 		return Participant{}, err
 	}
 
-	i := findParticipant(name, ps)
+	i := findParticipant(id, ps)
 	if i < 0 {
 		return Participant{}, errors.New(ParticipantNotFoundErrorMessage)
 	}
@@ -115,13 +120,13 @@ func (pc *Service) updateParticipant(name string, updater func(*Participant) err
 	return ps[i], nil
 }
 
-func (pc *Service) Delete(name string) error {
+func (pc *Service) Delete(id uint32) error {
 	ps, err := pc.readFile()
 	if err != nil {
 		return err
 	}
 
-	i := findParticipant(name, ps)
+	i := findParticipant(id, ps)
 	if i < 0 {
 		return errors.New(ParticipantNotFoundErrorMessage)
 	}

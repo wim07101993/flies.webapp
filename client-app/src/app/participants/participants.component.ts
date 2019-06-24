@@ -12,7 +12,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class ParticipantsComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'score'];
+  displayedColumns: string[] = [
+    //'id',
+    'name', 
+    'score'
+  ];
   dataSource = new MatTableDataSource([]);
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -42,7 +46,7 @@ export class ParticipantsComponent implements OnInit {
       }
 
       this.service
-        .createParticipant({name: result, score: 0})
+        .createParticipant({id: 0, name: result, score: 0})
         .subscribe(p => {
           this.refresh();
         });
@@ -65,7 +69,7 @@ export class ParticipantsComponent implements OnInit {
 
   updateParticipantScore(participant: ParticipantDTO, score: number) {
     this.service
-      .updateScore(participant.name, score)
+      .updateScore(participant.id, score)
       .subscribe((p) => {
         participant.score = p.score
         participant.name = p.name

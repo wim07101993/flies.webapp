@@ -30,14 +30,14 @@ func createRouter(c participants.Controller) *httprouter.Router {
 	r.POST("/api/participants", c.Create)
 
 	r.GET("/api/participants/", c.GetAll)
-	r.GET("/api/participants/:"+participants.NameParameter, c.Get)
+	r.GET("/api/participants/:"+participants.IdParameter, c.Get)
 
-	r.PUT("/api/participants/:"+participants.NameParameter+"/score", c.UpdateScore)
-	r.PUT("/api/participants/:"+participants.NameParameter+"/name", c.UpdateName)
-	r.PUT("/api/participants/:"+participants.NameParameter+"/increaseScore", c.IncreaseScore)
-	r.PUT("/api/participants/:"+participants.NameParameter+"/decreaseScore", c.DecreaseScore)
+	r.PUT("/api/participants/:"+participants.IdParameter+"/score", c.UpdateScore)
+	r.PUT("/api/participants/:"+participants.IdParameter+"/name", c.UpdateName)
+	r.PUT("/api/participants/:"+participants.IdParameter+"/increaseScore", c.IncreaseScore)
+	r.PUT("/api/participants/:"+participants.IdParameter+"/decreaseScore", c.DecreaseScore)
 
-	r.DELETE("/api/participants/:"+participants.NameParameter, c.Delete)
+	r.DELETE("/api/participants/:"+participants.IdParameter, c.Delete)
 
 	return r
 }
