@@ -51,6 +51,7 @@ func (pc *Controller) Create(w http.ResponseWriter, r *http.Request, ps httprout
 		return
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	writeJson(w, p)
 }
 
