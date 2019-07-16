@@ -15,7 +15,8 @@ export class ParticipantsComponent implements OnInit {
   displayedColumns: string[] = [
     //'id',
     'name', 
-    'score'
+    'score',
+    'buttons'
   ];
   dataSource = new MatTableDataSource([]);
 
