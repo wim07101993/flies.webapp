@@ -8,7 +8,7 @@ import { ParticipantDTO } from './participant';
 })
 export class ParticipantsService {
 
-  private apiUrl: string = 'http://localhost:5000/api'
+  private apiUrl: string = 'http://10.101.90.59:5000/api'
   
   constructor(
     private http: HttpClient
