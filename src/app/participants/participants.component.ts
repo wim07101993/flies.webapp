@@ -8,7 +8,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-participants',
   templateUrl: './participants.component.html',
-  styleUrls: ['./participants.component.css']
+  styleUrls: ['./participants.component.scss']
 })
 export class ParticipantsComponent implements OnInit {
 
