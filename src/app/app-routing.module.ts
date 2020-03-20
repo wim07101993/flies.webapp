@@ -4,7 +4,7 @@ import { ParticipantsComponent } from "./participants/participants.component";
 
 const routes: Routes = [
   { path: ":year", component: ParticipantsComponent },
-  { path: "**", redirectTo: new Date().getFullYear().toString() }
+  { path: "**", component: ParticipantsComponent }
 ];
 
 @NgModule({

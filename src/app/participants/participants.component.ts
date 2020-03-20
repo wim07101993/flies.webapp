@@ -35,7 +35,13 @@ export class ParticipantsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.year = +params["year"]; // '+' converts the string to a number
+      var syear = params["year"];
+      if (syear == null || syear == "") {
+        this.year = new Date().getFullYear();
+      } else {
+        this.year = +syear; // '+' converts the string to a number
+      }
+
       this.refresh();
     });
   }
