@@ -56,7 +56,7 @@ export class ParticipantsComponent implements OnInit {
       }
 
       this.service
-        .createParticipant({ id: 0, name: result, score: 0 })
+        .createParticipant(this.year, { id: 0, name: result, score: 0 })
         .subscribe(p => {
           this.refresh();
         });
@@ -77,14 +77,14 @@ export class ParticipantsComponent implements OnInit {
   }
 
   updateParticipantScore(participant: ParticipantDTO, score: number) {
-    this.service.updateScore(participant.id, score).subscribe(p => {
+    this.service.updateScore(this.year, participant.id, score).subscribe(p => {
       participant.score = p.score;
       participant.name = p.name;
     });
   }
 
   refresh() {
-    this.service.getParticipants().subscribe(ps => {
+    this.service.getParticipants(this.year).subscribe(ps => {
       this.dataSource = new MatTableDataSource(ps);
       this.dataSource.sort = this.sort;
     });

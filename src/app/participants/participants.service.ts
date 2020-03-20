@@ -7,39 +7,51 @@ import { ParticipantDTO } from "./participant";
   providedIn: "root"
 })
 export class ParticipantsService {
-  private apiUrl: string = "http://10.101.90.59:5000/api";
+  private apiUrl: string = "http://localhost:5000/api";
 
   constructor(private http: HttpClient) {}
 
-  createParticipant(participant: ParticipantDTO) {
-    return this.http.post(`${this.apiUrl}/participants`, participant);
+  createParticipant(year: number, participant: ParticipantDTO) {
+    return this.http.post(`${this.apiUrl}/participants/${year}/`, participant);
   }
 
-  getParticipants(): Observable<ParticipantDTO[]> {
-    return this.http.get<ParticipantDTO[]>(`${this.apiUrl}/participants`);
+  getParticipants(year: number): Observable<ParticipantDTO[]> {
+    return this.http.get<ParticipantDTO[]>(
+      `${this.apiUrl}/participants/${year}`
+    );
   }
 
-  getParticipant(id: number): Observable<ParticipantDTO> {
-    return this.http.get<ParticipantDTO>(`${this.apiUrl}/participants/${id}`);
+  getParticipant(year: number, id: number): Observable<ParticipantDTO> {
+    return this.http.get<ParticipantDTO>(
+      `${this.apiUrl}/participants/${year}/${id}`
+    );
   }
 
-  updateName(id: number, newName: string): Observable<ParticipantDTO> {
+  updateName(
+    year: number,
+    id: number,
+    newName: string
+  ): Observable<ParticipantDTO> {
     return this.http.put<ParticipantDTO>(
-      `${this.apiUrl}/participants/${id}/name/?name=${newName}`,
+      `${this.apiUrl}/participants/${year}/${id}/name/?name=${newName}`,
       ""
     );
   }
 
-  updateScore(id: number, score: number): Observable<ParticipantDTO> {
+  updateScore(
+    year: number,
+    id: number,
+    score: number
+  ): Observable<ParticipantDTO> {
     return this.http.put<ParticipantDTO>(
-      `${this.apiUrl}/participants/${id}/score/?score=${score}`,
+      `${this.apiUrl}/participants/${year}/${id}/score/?score=${score}`,
       ""
     );
   }
 
-  deleteParticipant(id: number) {
+  deleteParticipant(year: number, id: number) {
     return this.http.delete<ParticipantDTO>(
-      `${this.apiUrl}/participants/${id}`
+      `${this.apiUrl}/participants/${year}/${id}`
     );
   }
 }
