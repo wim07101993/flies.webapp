@@ -1,6 +1,6 @@
 <nav>
   <span *ngFor="let year of years">
-    <a [routerLink]="['/year', year]" routerLinkActive="active" mat-button>
+    <a [routerLink]="['/', year]" routerLinkActive="active" mat-button>
       {{ year }}
     </a>
   </span>
