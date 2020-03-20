@@ -1,25 +1,33 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import { MatInputModule, MatSortModule, MatDialogModule } from '@angular/material';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  MatInputModule,
+  MatSortModule,
+  MatDialogModule
+} from "@angular/material";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatTableModule } from "@angular/material/table";
+import { MatButtonModule } from "@angular/material/button";
+import { HttpClientModule } from "@angular/common/http";
 
-import { ParticipantsComponent, NewParticipantDialog } from './participants/participants.component';
-
+import {
+  ParticipantsComponent,
+  NewParticipantDialog
+} from "./participants/participants.component";
+import { NavigationComponent } from "./navigation/navigation/navigation.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     ParticipantsComponent,
     NewParticipantDialog,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -32,12 +40,10 @@ import { ParticipantsComponent, NewParticipantDialog } from './participants/part
     MatInputModule,
     MatSortModule,
     MatButtonModule,
-    MatDialogModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [
-    NewParticipantDialog,
-  ]
+  entryComponents: [NewParticipantDialog]
 })
-export class AppModule { }
+export class AppModule {}
